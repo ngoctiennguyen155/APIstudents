@@ -1,5 +1,7 @@
 # APIstudents
 
+project use mongodb + nodejs
+
 //get students
 https://apistudents.herokuapp.com/
 //get students by id
