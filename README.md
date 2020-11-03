@@ -1,6 +1,6 @@
 # APIstudents
 
-project use mongodb + nodejs
+project used mongodb + nodejs
 
 //get students
 https://apistudents.herokuapp.com/
