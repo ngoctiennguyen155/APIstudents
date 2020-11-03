@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
+const cors = require('cors');
 const studentModel = require('./models/Student');
 const { json } = require('body-parser');
 const { response } = require('express');
@@ -17,7 +18,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false })) 
 // parse application/json
 app.use(bodyParser.json())
-
+app.use(cors());
 //  router('/') and router('/id')
 app.get("/:id?",async (req,res)=>{
     const id = req.params.id;
