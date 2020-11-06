@@ -27,12 +27,12 @@ app.get("/:id?",async (req,res)=>{
     if(id){
         const id_int = parseInt(id) || 0;
         if(id_int<1 || id_int>JSON.parse(data).length){
-            res.send({error:"Cant find student/id !!!"});
+            res.send({message:"Faild",error:"Cant find student/id !!!"});
         }
-        res.send(JSON.parse(data)[id-1]);
+        res.send({message:"Successed",data:JSON.parse(data)[id-1]});
     }
     else
-    res.send(JSON.parse(data));
+    res.send({message:"Successed",data:JSON.parse(data)});
 })
 //create a new student 
 app.post("/",async(req,res)=>{
@@ -76,7 +76,7 @@ app.delete("/:id?",async(req,res)=>{
         const getStudents = await studentModel.find({});
         if(parseId<1 || parseId>getStudents.length)
         {
-            res.send({error:"Cant delete"});
+            res.send({message:"Failed",error:"Cant delete"});
         }else 
         {
             const stuDelete = getStudents[id-1];
@@ -85,7 +85,7 @@ app.delete("/:id?",async(req,res)=>{
         }
     }else 
     {
-        res.send({error:"Cant delete"});
+        res.send({message:"Failed",error:"Cant delete"});
     }
 })
 
