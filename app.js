@@ -1,16 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose');
+
 const bodyParser = require('body-parser')
 const cors = require('cors');
 const studentModel = require('./models/Student');
 const randomstring = require("randomstring");
-mongoose.connect(
-    'mongodb+srv://ngoctien:12345@cluster0.xhlbk.mongodb.net/APIstudents?retryWrites=true&w=majority',
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-);
+
+const routerStudent = require('./routers/studentsrouter');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,80 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-//  router('/') and router('/id')
-app.get("/:id?",async (req,res)=>{
-    const id = req.params.id;
-    if(id){
-        try{
-            const oneStudent = await studentModel.findById(id);
-            res.send({message:"Successed",data:oneStudent});
-        }catch(e)
-        {
-            res.send({message:"Faild",error:id+" not found!!!"});
-        }
-    }else{
-        const request = await studentModel.find({});
-        const data = await JSON.stringify(request);
-        res.send({message:"Successed",data:JSON.parse(data)});
-    }
-})
-
-//create a new student 
-app.post("/",async(req,res)=>{
-        const newStudent = new studentModel({
-        name :req.body.name,
-        age :req.body.age,
-        email:req.body.email,
-        address:"",
-        height:"",
-        weight:"",
-        graduating:"",
-        informations:{
-          mother:"",
-          father:"",
-          girlpriend:"",
-          ex:[]    
-        },
-        marks:[
-              {maths:0,
-              physical:0,
-              chemical:0,
-              english:0,
-              Literature:0,
-              geography:0}
-          ],
-        avg:0
-      });
-    await newStudent.save();
-    //console.log(newStudent);
-    res.send({message:"Add success"});
-})
-
-// update a student by id 
-app.put("/",(req,res)=>{
-
-})
-
-// delete student by id
-app.delete("/:id?",async(req,res)=>{
-    const id = req.params.id;
-    if(id){
-        const parseId  = parseInt(id)||0;
-        const getStudents = await studentModel.find({});
-        if(parseId<1 || parseId>getStudents.length)
-        {
-            res.send({message:"Failed",error:"Cant delete"});
-        }else 
-        {
-            const stuDelete = getStudents[id-1];
-            await studentModel.findByIdAndDelete(stuDelete._id);
-            res.send({message:"Delete success"});
-        }
-    }else 
-    {
-        res.send({message:"Failed",error:"Cant delete"});
-    }
-})
+app.use("/students",routerStudent);
 
 // app.get("/abc/generate",async(req,res)=>{
 //     generate();
