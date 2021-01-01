@@ -15,7 +15,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/students",routerStudent);
-
+app.get("/",(req,res)=>{
+    res.status(200).send("Server is running...");
+})
 // app.get("/abc/generate",async(req,res)=>{
 //     generate();
 //     res.send({ok:"ok"});
